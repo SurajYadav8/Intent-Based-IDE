@@ -3,7 +3,7 @@ import {Button} from "@/components/ui/button";
 const X = () => {
   return (
     <div>
-      <Button>
+      <Button >
         Click me 
       </Button>
     </div>
