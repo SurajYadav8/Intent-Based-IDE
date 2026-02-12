@@ -1,7 +1,11 @@
+import {Button} from "@/components/ui/button";
+
 const X = () => {
   return (
-    <div className="font-bold text-red-500">
-      Hello World!
+    <div>
+      <Button>
+        Click me 
+      </Button>
     </div>
 
   );
