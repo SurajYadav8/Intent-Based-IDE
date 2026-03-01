@@ -12,6 +12,8 @@ import {
 import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/components/theme-provider";
 
+import { ConvexClientProvider } from "@/components/ConvexClientProvider";
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
