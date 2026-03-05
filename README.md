@@ -1,4 +1,7 @@
 This is a Intent Based IDE project, integrating with AI.
+
+Tools: Clerk, Convex, 
+
 ## Getting Started
 
 First, run the development server:
