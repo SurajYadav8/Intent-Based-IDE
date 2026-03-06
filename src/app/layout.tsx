@@ -1,18 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs';
-import { dark } from "@clerk/themes";
-import { ThemeProvider } from "@/components/theme-provider";
-
-import { ConvexClientProvider } from "@/components/ConvexClientProvider";
+import { Providers } from "@/components/providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,40 +25,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        theme: dark,
-      }}
-    >
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${inter.variable} ${ibm_plex_mono.variable} antialiased`}
-        >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <ConvexClientProvider>
-              <header>
-                <SignedOut>
-                  <SignInButton />
-                  <SignUpButton>
-                    <button className="bg-rose-500 text-white p-2 rounded-md">
-                      Sign Up
-                    </button>
-                  </SignUpButton>
-                </SignedOut>
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
-              </header>
-              {children}
-            </ConvexClientProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider >
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${ibm_plex_mono.variable} antialiased`}
+      >
+        <Providers>
+
+          {children}
+        </Providers>
+      </body>
+    </html>
   );
 }
