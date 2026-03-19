@@ -1,3 +1,5 @@
+Hi there!!
+
 This is a Intent Based IDE project, integrating with AI.
 
 Tools: Clerk, Convex, AI SDK, INNGEST, Firecrawl AI, Sentry
