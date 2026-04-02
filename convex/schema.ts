@@ -6,6 +6,7 @@ export default defineSchema ({
         name: v.string(),
         ownerId: v.string(),
         updatedAt: v.number(),
+        
         importStatus: v.optional(
             v.union(
                 v.literal("importing"),
@@ -21,7 +22,7 @@ export default defineSchema ({
                 v.literal("cancelled"),
             ),
         ),
-        exportUrl: v.optional(v.string()),
+        exportRepoUrl: v.optional(v.string()),
           
     }).index("by_owner", ["ownerId"]),
 });
