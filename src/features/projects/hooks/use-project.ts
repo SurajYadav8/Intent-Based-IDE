@@ -1,14 +1,18 @@
-import { useMutation, useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";  // every component starting with use is a custom hook in react
+// useQuery - subscribes to data, stays live, auto-updates when database changes
+// useMutation — triggers a change in the database
 
-import { api } from "../../../../convex/_generated/api";
+
+import { api } from "../../../../convex/_generated/api"; // api — the auto-generated menu of all your Convex functions
+
 import { Id, Doc} from "../../../../convex/_generated/dataModel";
 
 
-export const useProjects = () => {
+export const useProjects = () => {  // useProjects is a custom hook that allows us to read all projects from our database.
     return useQuery(api.projects.get);
 };
 
-export  const useProjectsPortal = (limit: number) => {
+export  const useProjectsPartial = (limit: number) => { // useProjectsPartial is a custom hook that allows us to read a limited number of projects.
     return useQuery(api.projects.getPartial, {
         limit,
     });

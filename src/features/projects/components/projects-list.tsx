@@ -1,5 +1,5 @@
 import { Spinner } from "@/components/ui/spinner";
-import { useProjectsPortal } from "../hooks/use-project";
+import { useProjectsPartial } from "../hooks/use-project";
 import { Doc } from "../../../../convex/_generated/dataModel";
 import Link from "next/link";
 import { AlertCircleIcon, ArrowRightIcon, GlobeIcon, Loader2Icon } from "lucide-react";
@@ -97,7 +97,7 @@ export const ProjectsList = ({
     onViewAll
 }: ProjectsListProps) => {
 
-    const projects = useProjectsPortal(5);
+    const projects = useProjectsPartial(5);
 
     if (projects === undefined) {
         return <Spinner className="size-4 text-ring" />;

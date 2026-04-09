@@ -1,6 +1,6 @@
-import { mutation, query } from "./_generated/server";
+import { mutation, query } from "./_generated/server"; // mutation is function that allows us to change data in our database and query is function that allows us to read data from our database.
 import { v } from "convex/values";
-import { verifyAuth } from "./auth";
+import { verifyAuth } from "./auth";  // verifyAuth checks if the user is authenticated (yes/no)
 
 export const create = mutation({
     args: {
@@ -10,9 +10,6 @@ export const create = mutation({
 
         const identity = await verifyAuth(ctx);
 
-        if (!identity) {
-            throw new Error("Unauthorised");
-        }
 
         const projectId = await ctx.db.insert("projects", {
             name: args.name,
@@ -24,7 +21,7 @@ export const create = mutation({
     },
 });
 
-export const getPartial = query({
+export const getPartial = query({  // getpartial is a query that allows us to read a limited number of projects from our database.
     args: {
         limit: v.number(),
     },
@@ -33,8 +30,8 @@ export const getPartial = query({
 
         return await ctx.db
         .query("projects")
-        .withIndex("by_owner", (q) => q.eq("ownerId", identity.subject))
-        .order("desc")
+        .withIndex("by_owner", (q) => q.eq("ownerId", identity.subject)) // here q is query builder provided by convex with fn like .eq, .gt, .lt...
+        .order("desc")  // here we we used .order("dsec") because if we go for updatedAt which will provide us larger number for latest projects and due to descending order it will not give latest projects.
         .take(args.limit);
 
     },
