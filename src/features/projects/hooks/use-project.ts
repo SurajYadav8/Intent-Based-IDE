@@ -5,14 +5,18 @@ import { useMutation, useQuery } from "convex/react";  // every component starti
 
 import { api } from "../../../../convex/_generated/api"; // api — the auto-generated menu of all your Convex functions
 
-import { Id, Doc} from "../../../../convex/_generated/dataModel";
+import { Id, Doc } from "../../../../convex/_generated/dataModel";
+
+export const useProject = (projectId: Id<"projects">) => {
+    return useQuery(api.projects.getById, { id: projectId });
+};
 
 
 export const useProjects = () => {  // useProjects is a custom hook that allows us to read all projects from our database.
     return useQuery(api.projects.get);
 };
 
-export  const useProjectsPartial = (limit: number) => { // useProjectsPartial is a custom hook that allows us to read a limited number of projects.
+export const useProjectsPartial = (limit: number) => { // useProjectsPartial is a custom hook that allows us to read a limited number of projects.
     return useQuery(api.projects.getPartial, {
         limit,
     });
@@ -24,7 +28,7 @@ export const useCreateProject = () => {
             const existingProjects = localStore.getQuery(api.projects.get);
 
 
-            if(existingProjects !== undefined) {
+            if (existingProjects !== undefined) {
                 const now = Date.now();
                 const newProject = {
                     _id: crypto.randomUUID() as Id<"projects">,
@@ -42,4 +46,42 @@ export const useCreateProject = () => {
             }
         }
     );
-}
+};
+
+
+export const useRenameProject = (projectId: Id<"projects">) => {
+    return useMutation(api.projects.renameProject).withOptimisticUpdate(
+        (localStore, args) => {
+            const existingProject = localStore.getQuery(api.projects.getById, {
+                id: projectId,
+            }
+            );
+
+
+            if (existingProject !== undefined && existingProject !== null) {
+                localStore.setQuery(
+                    api.projects.getById,
+                    { id: projectId },
+                    {
+                        ...existingProject,
+                        name: args.newName,
+                        updatedAt: Date.now(),
+                    }
+                );
+
+            };
+
+            const existingProjects = localStore.getQuery(api.projects.get);
+
+            if(existingProjects !== undefined) {
+                localStore.setQuery(
+                    api.projects.get,
+                    {},
+                    existingProjects.map((project) => {
+                        return project._id === args.id ? { ...project, name: args.newName, updatedAt: Date.now() } : project
+                    })
+                )
+            }
+        }
+    );
+};

@@ -1,5 +1,5 @@
 import { mutation, query } from "./_generated/server"; // mutation is function that allows us to change data in our database and query is function that allows us to read data from our database.
-import { v } from "convex/values";
+import { convexToJson, v } from "convex/values";
 import { verifyAuth } from "./auth";  // verifyAuth checks if the user is authenticated (yes/no)
 
 export const create = mutation({
@@ -48,4 +48,51 @@ export const get = query({
           .order("desc")
           .collect();
     },
+});
+
+export const getById = query ({
+    args: {
+        id: v.id("projects")
+    },
+    handler: async (ctx, args) => {
+        const identity = await verifyAuth(ctx);
+
+        const project = await ctx.db.get("projects", args.id);
+
+        if(!project) {
+            throw new Error("Project not found");
+        }
+
+        if(project.ownerId !== identity.subject) {
+            throw new Error("Unauthorized access to this project");
+        }
+
+        return project;
+    }
+});
+
+export const renameProject = mutation({
+    args: {
+        id: v.id("projects"),
+        newName: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const identity = await verifyAuth(ctx);
+
+        const project = await ctx.db.get("projects", args.id);
+
+        if(!project) {
+            throw new Error("Project not found");
+        }
+
+        if(project.ownerId !== identity.subject ) {
+
+            throw new Error("Unauthorized access to this project");
+        }
+
+        await ctx.db.patch("projects", args.id, {
+            name: args.newName,
+            updatedAt: Date.now(),
+        });
+    }, 
 });
