@@ -21,6 +21,7 @@ import { TreeItemWrapper } from "./tree-item-wrapper";
 import { subtle } from "crypto";
 import { createFolder } from "../../../../../convex/files";
 import { RenameInput } from "./rename-input";
+import { useEditor } from "@/features/editor/hooks/use-editor";
 
 export const Tree = ({
     item,
@@ -40,6 +41,8 @@ export const Tree = ({
     const deleteFile = useDeleteFile();
     const createFile = useCreateFile();
     const createFolder = useCreateFolder();
+
+    const { openFile, closeTab, activeTabId } = useEditor(projectId); 
 
     const folderContents = useFolderContents({
         projectId,
