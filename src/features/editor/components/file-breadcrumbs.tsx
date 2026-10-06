@@ -38,4 +38,8 @@ export const FileBreadcrumbs = ({
 
         
     }
+
+    return (
+        <div className="p-2 bg-background "
+    )
 };
